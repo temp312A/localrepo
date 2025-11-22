@@ -179,26 +179,6 @@
                 window.top.location = window.self.location;
             }
             
-            // DevTools Detection and Prevention
-            let devtools = {open: false};
-            const threshold = 160;
-            
-            setInterval(function() {
-                if (window.outerHeight - window.innerHeight > threshold || 
-                    window.outerWidth - window.innerWidth > threshold) {
-                    if (!devtools.open) {
-                        devtools.open = true;
-                        // Clear page content when DevTools detected
-                        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Arial;font-size:24px;">Developer Tools Detected</div>';
-                        document.body.style.display = 'block';
-                    }
-                } else {
-                    if (devtools.open) {
-                        devtools.open = false;
-                    }
-                }
-            }, 500);
-            
             // Disable console methods
             console.clear();
             console.log = function() {};
@@ -216,33 +196,6 @@
             console.count = function() {};
             console.assert = function() {};
             console.trace = function() {};
-            
-            // Anti-debugging protection
-            (function() {
-                function disableDebugger() {
-                    setInterval(function() {
-                        (function(){}).constructor('debugger')();
-                    }, 1000);
-                }
-                try {
-                    disableDebugger();
-                } catch(e) {}
-            })();
-            
-            // Prevent common inspection methods
-            Object.defineProperty(window, 'devtools', {
-                get: function() {
-                    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Arial;font-size:24px;">Developer Tools Detected</div>';
-                }
-            });
-            
-            // Block common DevTools opening methods
-            window.addEventListener('resize', function() {
-                if (window.outerHeight - window.innerHeight > threshold || 
-                    window.outerWidth - window.innerWidth > threshold) {
-                    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Arial;font-size:24px;">Developer Tools Detected</div>';
-                }
-            });
             
         })();
     </script>
